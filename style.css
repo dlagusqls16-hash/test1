@@ -1,0 +1,142 @@
+/* 쇼핑리스트 스타일. 포인트 컬러: 초록(#2E9E6B)은 .streamlit/config.toml 테마와 맞춘다.
+   Streamlit의 emotion 클래스는 버전마다 바뀌므로, container/form의 key가 만드는
+   `st-key-*` 클래스와 data-testid만 선택자로 사용한다. */
+
+:root {
+  --accent: #2E9E6B;
+  --accent-soft: #E4F3EB;
+  --danger: #C0392B;
+  --card-border: #E1E8DF;
+  --muted: #8A968E;
+}
+
+.block-container {
+  max-width: 640px;
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+/* ---------- 상단 요약 ---------- */
+h1 { font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0; }
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0.4rem 0 0.3rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.summary-num { font-size: 1.9rem; font-weight: 800; color: var(--accent); line-height: 1; }
+[data-testid="stProgress"] { margin-bottom: 0.6rem; }
+[data-testid="stProgress"] > div > div { height: 0.6rem; border-radius: 999px; }
+
+/* ---------- 입력 영역 ---------- */
+.st-key-add_card {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 0.9rem 1rem 0.4rem;
+  box-shadow: 0 1px 3px rgba(31, 42, 36, 0.05);
+}
+.st-key-add_card [data-testid="stForm"] { border: 0; padding: 0; }
+
+/* 흰 카드 위에서도 입력 칸이 구분되도록 연한 배경 */
+[data-testid="stTextInputRootElement"],
+[data-testid="stNumberInputContainer"] {
+  background: #F3F6F2;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+}
+[data-testid="stTextInputRootElement"]:focus-within,
+[data-testid="stNumberInputContainer"]:focus-within {
+  border-color: var(--accent);
+}
+
+/* ---------- 목록 카드 ---------- */
+[class*="st-key-row"] {
+  background: #fff;
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 0.35rem 0.8rem;
+  box-shadow: 0 1px 2px rgba(31, 42, 36, 0.04);
+  transition: background 0.15s, opacity 0.15s;
+}
+[class*="st-key-rowedit_"] {
+  border-color: var(--accent);
+  padding: 0.8rem 0.9rem;
+}
+/* 체크된 항목: 연한 배경 + 흐린 글자 */
+[class*="st-key-rowdone_"] { background: #EEF2EC; box-shadow: none; }
+[class*="st-key-rowdone_"] [data-testid="stCheckbox"] { opacity: 0.55; }
+
+/* 수량 배지 */
+.qty-badge {
+  display: inline-block;
+  min-width: 2.2rem;
+  text-align: center;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+[class*="st-key-rowdone_"] .qty-badge { background: #E1E6DF; color: var(--muted); }
+
+/* 긴 이름이 레이아웃을 밀어내지 않도록 */
+[class*="st-key-row"] [data-testid="stCheckbox"] label p {
+  overflow-wrap: anywhere;
+  font-size: 1.02rem;
+}
+
+/* ---------- 버튼 ---------- */
+.stButton button, [data-testid="stFormSubmitButton"] button {
+  min-height: 44px;            /* 터치하기 쉬운 크기 */
+  border-radius: 12px;
+  font-weight: 600;
+}
+/* 행 안의 아이콘 버튼(수정/삭제) */
+[class*="st-key-row_"] .stButton button,
+[class*="st-key-rowdone_"] .stButton button {
+  min-width: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+[class*="st-key-row_"] .stButton button:hover,
+[class*="st-key-rowdone_"] .stButton button:hover { background: var(--accent-soft); }
+.st-key-clear_wrap .stButton button { color: var(--danger); border-color: #E8B9B3; background: #fff; }
+.st-key-clear_wrap .stButton button:hover:not(:disabled) { background: #FBEDEB; border-color: var(--danger); }
+.st-key-clear_wrap .stButton button:disabled { color: #B7C0BA; border-color: var(--card-border); }
+.st-key-clear_wrap { margin-top: 0.6rem; }
+
+/* ---------- 빈 상태 ---------- */
+.empty-state {
+  text-align: center;
+  padding: 2.2rem 1rem;
+  color: var(--muted);
+  background: #fff;
+  border: 1px dashed #CBD6C8;
+  border-radius: 16px;
+}
+.empty-state .icon { font-size: 2.6rem; margin-bottom: 0.4rem; }
+
+/* ---------- 모바일: 한 줄 레이아웃 유지 ---------- */
+@media (max-width: 640px) {
+  .block-container { padding-left: 1rem; padding-right: 1rem; padding-top: 1.5rem; }
+  /* Streamlit은 좁은 화면에서 컬럼을 세로로 쌓는다 -> 행/입력폼은 가로를 유지한다 */
+  [class*="st-key-row"] [data-testid="stHorizontalBlock"],
+  .st-key-add_card [data-testid="stHorizontalBlock"] {
+    flex-wrap: nowrap !important;
+    gap: 0.3rem !important;
+  }
+  [class*="st-key-row"] [data-testid="stColumn"],
+  .st-key-add_card [data-testid="stColumn"] {
+    min-width: 0 !important;
+  }
+  .st-key-add_card { padding: 0.7rem 0.7rem 0.2rem; }
+  /* 좁은 폭에서는 수량 입력의 +/- 스텝 버튼을 숨겨 숫자 입력 칸을 확보한다 */
+  [data-testid="stNumberInput"] button { display: none; }
+}
